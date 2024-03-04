@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Mission sport',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
           useMaterial3: true,
         ),
         home: const MyHomePage(title: 'Mission sport'),
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           '/exercice': (BuildContext) => const ExercicePage(title: 'Exercice'),
           '/seance': (BuildContext) => const SeancePage(title: 'Seance'),
           '/mesSeance': (BuildContext) =>
-              const MesSeancePage(title: 'MesSeance')
+              const MesSeancePage(title: 'MesSeance'),
         });
   }
 }

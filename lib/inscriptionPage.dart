@@ -17,7 +17,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
   String mdp = "";
   String txtButton = "Submit";
   bool _isLoading = false;
-  Map<String, dynamic> dataMap = new Map();
+  Map<String, dynamic> dataMap = {};
   bool recupDataBool = false;
 
   Future<http.Response> fetchRegister(String login, String mdp) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mission_sport/fetch.dart';
 import 'api/api_exercice.dart';
 
 class ExercicePage extends StatefulWidget {

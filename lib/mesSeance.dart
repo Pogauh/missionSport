@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'api/api_exercice.dart';
+import 'package:mission_sport/mesExoSeance.dart';
 
 class MesSeancePage extends StatefulWidget {
   const MesSeancePage({super.key, required String title});
@@ -9,77 +9,78 @@ class MesSeancePage extends StatefulWidget {
 }
 
 class _MesSeancePageState extends State<MesSeancePage> {
-  List<dynamic>? _userData;
-  Map<String, dynamic> dataMap = new Map();
+  Map<String, dynamic> dataMap = {};
+  Map<String, dynamic> seanceMap = {};
 
-  @override
-  // initie la récupération des seances
-  void initState() {
-    super.initState();
-    fetchUser();
-  }
-
-  Widget buildSeanceList() {
-    if (_userData == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    return ListView.builder(
-      itemCount: _userData!.length,
-      itemBuilder: (context, index) {
-        final user = _userData![index];
-        //Inkwell a la place de Card [plus tard]pour marqué chaque seance pour aller à la page DetailSeance
-        return Card(
-          //Mettre inkWell et le on tap
-          //onTap: () => _navigateToEditPage(user),
-          child: Card(
-            margin: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Text(
-                  'Commentaire: ${user['commentaire']}',
-                  style: TextStyle(fontSize: 20),
-                ),
-                Text(
-                  'Durée: ${user['duree']}',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+  //fonction qui renvoi vers la page fidelité du client
+  void _navigateToInfoPage(dynamic seance) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MesExoSeancePage(seance: seance)),
     );
   }
 
-  // Récupération des seances
-  fetchUser() async {
-    try {
-      String id = dataMap['data']['id'].toString();
-      final userData = await GetUser.fetchUser(id);
-      setState(() {
-        _userData = userData['Seance'];
-      });
-    } catch (e) {
-      print('Error fetching seances data: $e');
+  Widget buildSeanceList() {
+    // Vérifiez si la clé "seances" existe dans seanceMap
+    if (seanceMap.containsKey("seances")) {
+      // Récupérez la liste de séances
+      List<dynamic>? seances = seanceMap["seances"];
+
+      // Vérifiez si la liste de séances est non nulle et a au moins 1 élément
+      if (seances != null && seances.isNotEmpty) {
+        return ListView.builder(
+          itemCount: seances.length,
+          itemBuilder: (context, index) {
+            // Récupérez la séance à l'index donné
+            final seance = seances[index];
+
+            return InkWell(
+              onTap: () => _navigateToInfoPage(seance),
+              child: Card(
+                margin: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text(
+                      'Commentaire: ${seance['commentaire']}',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      'Durée: ${seance['duree']}',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      }
     }
+
+    // Si la clé "seances" n'existe pas ou la liste est vide, affichez un message indiquant l'absence de données.
+    return Center(child: Text("Aucune donnée disponible."));
   }
 
   @override
   Widget build(BuildContext context) {
-    dataMap =
+    seanceMap =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
       ),
       body: Column(
-        children: [buildSeanceList()],
+        children: [
+          Expanded(
+            child: buildSeanceList(),
+          )
+        ],
       ),
     );
   }

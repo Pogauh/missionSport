@@ -31,7 +31,7 @@ class GetSeance {
 
 class GetUser {
   static Future<Map<String, dynamic>> fetchUser(id) async {
-    print('lid ' + id);
+    print("l'id de l'user : " + id);
     final response = await http.get(
         Uri.parse('https://s3-4680.nuage-peda.fr/missionSport/api/users/$id'));
     if (response.statusCode == 200) {
