@@ -105,10 +105,11 @@ class _AccueilPageState extends State<AccueilPage> {
               }),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Row(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
@@ -134,8 +135,23 @@ class _AccueilPageState extends State<AccueilPage> {
                 ),
               ],
             ),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/createSeance',
+                          arguments: dataMap);
+                    },
+                    child: const Text("Crée une séance"),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

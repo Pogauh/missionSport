@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mission_sport/addExerciceSeance.dart';
 import 'package:mission_sport/pageExercice.dart';
 import 'package:mission_sport/seancePage.dart';
 import 'package:mission_sport/mesSeance.dart';
+import 'package:mission_sport/createSeance.dart';
 
 import 'myHomePage.dart';
 
@@ -36,6 +38,10 @@ class MyApp extends StatelessWidget {
           '/seance': (BuildContext) => const SeancePage(title: 'Seance'),
           '/mesSeance': (BuildContext) =>
               const MesSeancePage(title: 'MesSeance'),
+          '/createSeance': (BuildContext) =>
+              const CreateSeancePage(title: 'Créer ma séance'),
+          '/addExerciceSeance': (BuildContext) => const AddExerciceSeancePage(
+              title: 'Ajouter un exercice a la seance'),
         });
   }
 }

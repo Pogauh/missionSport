@@ -33,21 +33,42 @@ class _MesSeancePageState extends State<MesSeancePage> {
           itemBuilder: (context, index) {
             // Récupérez la séance à l'index donné
             final seance = seances[index];
-
+            DateTime date = DateTime.parse(seance['date']);
+            String formattedDate = "${date.day}/${date.month}/${date.year}";
             return InkWell(
               onTap: () => _navigateToInfoPage(seance),
               child: Card(
                 margin: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    Text(
-                      'Commentaire: ${seance['commentaire']}',
-                      style: const TextStyle(fontSize: 20),
+                    ListTile(
+                      title: Text(
+                        'Commentaire: ${seance['commentaire']}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Durée: ${seance['duree']} minutes',
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          Text(
+                            'Type: ${seance['type']['nom']}',
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      trailing: Text(
+                        'Date: $formattedDate',
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     ),
-                    Text(
-                      'Durée: ${seance['duree']}',
-                      style: const TextStyle(fontSize: 20),
-                    ),
+
+                    // Ajoutez d'autres informations si nécessaire
                   ],
                 ),
               ),

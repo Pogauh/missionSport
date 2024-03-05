@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mission_sport/addExerciceSeance.dart';
+import 'package:mission_sport/seancePage.dart';
 
 class MesExoSeancePage extends StatefulWidget {
   const MesExoSeancePage({Key? key, required this.seance}) : super(key: key);
@@ -9,6 +11,12 @@ class MesExoSeancePage extends StatefulWidget {
 }
 
 class _MesExoSeancePageState extends State<MesExoSeancePage> {
+  String seanceId = "";
+
+  calcul() {
+    seanceId = widget.seance["id"].toString();
+  }
+
   Widget buildExoList() {
     // Vérifiez si la clé "detailSeances" existe dans seance
     if (widget.seance.containsKey("detailSeances")) {
@@ -26,9 +34,35 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
               margin: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Text(
-                    'Exercice: ${detailSeance['exercice']['nom']}',
-                    style: const TextStyle(fontSize: 20),
+                  Row(
+                    children: [
+                      Text(
+                        '${index + 1}',
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(width: 40),
+                      Expanded(
+                          child: Column(
+                        children: [
+                          Text(
+                            'Exercice: ${detailSeance['exercice']['nom']}',
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          Text(
+                            'Series: ${detailSeance['sets']}',
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          Text(
+                            'Répétitions: ${detailSeance['repetition']}',
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          Text(
+                            'Commentaire: ${detailSeance['commentaire']}',
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        ],
+                      ))
+                    ],
                   ),
                 ],
               ),
@@ -44,6 +78,7 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
 
   @override
   Widget build(BuildContext context) {
+    calcul();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Exercice seance"),
@@ -54,6 +89,13 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [Expanded(child: buildExoList())],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/addExerciceSeance',
+              arguments: seanceId);
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

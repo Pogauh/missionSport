@@ -1,17 +1,28 @@
-import 'package:flutter/material.dart';
-import 'api/api_exercice.dart';
+import 'dart:ffi';
 
-class ExercicePage extends StatefulWidget {
-  const ExercicePage({super.key, required String title});
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+
+import 'package:mission_sport/api/api_exercice.dart';
+
+class AddExerciceSeancePage extends StatefulWidget {
+  const AddExerciceSeancePage({Key? key, required this.title})
+      : super(key: key);
+
+  final String title;
 
   @override
-  State<ExercicePage> createState() => _ExercicePageState();
+  State<AddExerciceSeancePage> createState() => _AddExerciceSeancePageState();
 }
 
-class _ExercicePageState extends State<ExercicePage> {
+class _AddExerciceSeancePageState extends State<AddExerciceSeancePage> {
+  bool _isLoading = false;
+  String exerciceId = "";
+  String seanceId = "";
+  bool recupDataBool = false;
   Map<String, dynamic>? _exercicesData;
   List<dynamic>? _filteredExercices;
-
   TextEditingController _nomController = TextEditingController();
 
   @override
@@ -21,7 +32,7 @@ class _ExercicePageState extends State<ExercicePage> {
     fetchExercice();
   }
 
-  // Récupération des users
+  // Récupération des exercices
   fetchExercice() async {
     try {
       final exercicesData = await GetExercice.fetchExercice();
@@ -34,7 +45,7 @@ class _ExercicePageState extends State<ExercicePage> {
     }
   }
 
-  // fonction pour rechercher les users
+  // fonction pour rechercher les exercices
   void _searchExercices() {
     if (_exercicesData != null) {
       // Variables qui prend en compte les ecritures du champ de recherche
@@ -45,7 +56,7 @@ class _ExercicePageState extends State<ExercicePage> {
           final String nom = exercice['nom']?.toString().toLowerCase() ?? '';
 
           // Conditions que les variables doivent respecter pour être inclure
-          // le client dans la liste envoyé à FilteredUsers
+          // le client dans la liste envoyé à FilteredExercices
           return nom.contains(nomQuery);
         }).toList();
       });
@@ -62,9 +73,10 @@ class _ExercicePageState extends State<ExercicePage> {
       itemCount: _filteredExercices!.length,
       itemBuilder: (context, index) {
         final exercice = _filteredExercices![index];
-        //Inkwell pour marqué chaque utilisateur pour aller à la page fidélité
-        return Card(
-          // Section pour le client
+        return InkWell(
+          onTap: () {
+            startLoading(exercice['id'].toString());
+          },
           child: Card(
             margin: EdgeInsets.all(8.0),
             child: Column(
@@ -85,9 +97,68 @@ class _ExercicePageState extends State<ExercicePage> {
     );
   }
 
-  // Barre de recherche
+  // Méthode qui ajoute l'exercice
+  Future<http.Response> fetchDetailSeance(String seanceId, String exerciceId) {
+    return http.post(
+      Uri.parse(
+          'https://s3-4680.nuage-peda.fr/missionSport/api/detail_seances'),
+      headers: <String, String>{'Content-Type': 'application/ld+json'},
+      body: convert.jsonEncode(
+          <String, String>{'seance': seanceId, 'exercice': exerciceId}),
+    );
+  }
+
+  // Fonction qui attend fetcgDetailSeance et qui verifie son resultat
+  Future<void> recupDataJson(exerciceId) async {
+    var reponse = await fetchDetailSeance(seanceId, exerciceId);
+    print("l'id de la seance $seanceId et lexo est $exerciceId");
+
+    if (reponse.statusCode == 201) {
+      recupDataBool = true;
+    } else if (reponse.statusCode == 500) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Un probleme est survenue"),
+        ),
+      );
+    } else {
+      print("erreur " + reponse.statusCode.toString());
+    }
+  }
+
+  // Fonction déclanché par le clique qui attend recupDataJson et annonce son resultat
+  startLoading(String exerciceId) async {
+    setState(() {
+      _isLoading = true;
+      exerciceId = '/missionSport/api/exercices/$exerciceId';
+      print(exerciceId);
+    });
+    await recupDataJson(exerciceId);
+    if (recupDataBool) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("La séance a été créer"),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Erreur dans la connection à la BDD"),
+        ),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    seanceId = ModalRoute.of(context)?.settings.arguments as String;
+    seanceId = "/missionSport/api/seances/$seanceId";
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
