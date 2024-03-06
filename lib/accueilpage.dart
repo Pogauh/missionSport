@@ -44,7 +44,6 @@ class _AccueilPageState extends State<AccueilPage> {
       _isLoading = true;
     });
     await recupDataJson();
-    // si les données ont été récupéré
     if (recupDataBool) {
       // on navige vers MesSeancePage
       Navigator.push(
@@ -59,7 +58,6 @@ class _AccueilPageState extends State<AccueilPage> {
         ),
       );
     } else {
-      // sinon on affiche l'erreur et remet le booléen _isLoading à faux
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Erreur dans la connection à la BDD"),
@@ -87,7 +85,6 @@ class _AccueilPageState extends State<AccueilPage> {
 
   @override
   Widget build(BuildContext context) {
-    // recup l'argument passé dans le context précédent
     dataMap =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     return Scaffold(
@@ -98,8 +95,6 @@ class _AccueilPageState extends State<AccueilPage> {
           IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () {
-                // l'icon permet de fermer le context en cours et tout les précédents (empilé via des push)
-                // et nous ouvre le context correspondant à l'écran de login
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/login', (route) => false);
               }),

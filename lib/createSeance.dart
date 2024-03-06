@@ -55,9 +55,7 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
     });
     await recupDataJson();
     await genereExo(reponse);
-    // si les données ont été récupéré
     if (recupDataBool) {
-      // on navige vers MesSeancePage
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -70,7 +68,6 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
         ),
       );
     } else {
-      // sinon on affiche l'erreur et remet le booléen _isLoading à faux
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Erreur dans la connection à la BDD"),
@@ -116,18 +113,14 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    // Faites quelque chose lorsque le bouton est pressé
-                  },
+                  onPressed: () {},
                   child: Text("Séance haut du corps"),
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    // Faites quelque chose lorsque le bouton est pressé
-                  },
+                  onPressed: () {},
                   child: Text("Séance bas du corps"),
                 ),
                 SizedBox(height: 20),

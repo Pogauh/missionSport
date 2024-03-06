@@ -72,7 +72,6 @@ class _CreateseancePersoPageState extends State<CreateseancePersoPage> {
         ),
       );
     } else {
-      // sinon on affiche l'erreur et remet le booléen _isLoading à faux
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Erreur dans la connection à la BDD"),

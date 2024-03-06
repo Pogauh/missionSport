@@ -21,7 +21,7 @@ class _ExercicePageState extends State<ExercicePage> {
     fetchExercice();
   }
 
-  // Récupération des users
+  // Récupération des exercices
   fetchExercice() async {
     try {
       final exercicesData = await GetExercice.fetchExercice();
@@ -34,7 +34,7 @@ class _ExercicePageState extends State<ExercicePage> {
     }
   }
 
-  // fonction pour rechercher les users
+  // fonction pour rechercher les exercices
   void _searchExercices() {
     if (_exercicesData != null) {
       // Variables qui prend en compte les ecritures du champ de recherche
@@ -45,7 +45,7 @@ class _ExercicePageState extends State<ExercicePage> {
           final String nom = exercice['nom']?.toString().toLowerCase() ?? '';
 
           // Conditions que les variables doivent respecter pour être inclure
-          // le client dans la liste envoyé à FilteredUsers
+          // l'exercice dans la liste envoyé à FilteredExercices
           return nom.contains(nomQuery);
         }).toList();
       });
@@ -62,9 +62,7 @@ class _ExercicePageState extends State<ExercicePage> {
       itemCount: _filteredExercices!.length,
       itemBuilder: (context, index) {
         final exercice = _filteredExercices![index];
-        //Inkwell pour marqué chaque utilisateur pour aller à la page fidélité
         return Card(
-          // Section pour le client
           child: Card(
             margin: EdgeInsets.all(8.0),
             child: Column(
@@ -85,7 +83,6 @@ class _ExercicePageState extends State<ExercicePage> {
     );
   }
 
-  // Barre de recherche
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +92,6 @@ class _ExercicePageState extends State<ExercicePage> {
           children: [
             Expanded(
               child: TextField(
-                // Permet la mise a jour en temps réel
                 controller: _nomController,
                 onChanged: (_) => _searchExercices(),
                 decoration: const InputDecoration(

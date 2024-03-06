@@ -19,7 +19,6 @@ class _NewSeancePageState extends State<NewSeancePage> {
       itemBuilder: (context, index) {
         // Récupérez la séance à l'index donné
         final exercice = deuxExercices[index];
-        // Retournez la Card ici
         return Card(
           margin: const EdgeInsets.all(8.0),
           child: Column(

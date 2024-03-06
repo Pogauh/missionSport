@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -56,14 +54,13 @@ class _AddExerciceSeancePageState extends State<AddExerciceSeancePage> {
           final String nom = exercice['nom']?.toString().toLowerCase() ?? '';
 
           // Conditions que les variables doivent respecter pour être inclure
-          // le client dans la liste envoyé à FilteredExercices
+          // l'exercice dans la liste envoyé à FilteredExercices
           return nom.contains(nomQuery);
         }).toList();
       });
     }
   }
 
-  // Liste des clients
   Widget buildExerciceList() {
     if (_filteredExercices == null) {
       return const Center(child: CircularProgressIndicator());
@@ -108,7 +105,7 @@ class _AddExerciceSeancePageState extends State<AddExerciceSeancePage> {
     );
   }
 
-  // Fonction qui attend fetcgDetailSeance et qui verifie son resultat
+  // Fonction qui attend fetchDetailSeance et qui verifie son resultat
   Future<void> recupDataJson(exerciceId) async {
     var reponse = await fetchDetailSeance(seanceId, exerciceId);
     print("l'id de la seance $seanceId et lexo est $exerciceId");
@@ -137,13 +134,13 @@ class _AddExerciceSeancePageState extends State<AddExerciceSeancePage> {
     if (recupDataBool) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("La séance a été créer"),
+          content: Text("L'exercice a été ajouter"),
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Erreur dans la connection à la BDD"),
+          content: Text("Erreur dans l'ajout de l'exercice à la séance"),
         ),
       );
       setState(() {
@@ -166,7 +163,6 @@ class _AddExerciceSeancePageState extends State<AddExerciceSeancePage> {
           children: [
             Expanded(
               child: TextField(
-                // Permet la mise a jour en temps réel
                 controller: _nomController,
                 onChanged: (_) => _searchExercices(),
                 decoration: const InputDecoration(

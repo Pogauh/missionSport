@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mission_sport/addExerciceSeance.dart';
-import 'package:mission_sport/seancePage.dart';
+import 'package:mission_sport/ModifExercice.dart';
 
 class MesExoSeancePage extends StatefulWidget {
   const MesExoSeancePage({Key? key, required this.seance}) : super(key: key);
@@ -17,6 +16,14 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
     seanceId = widget.seance["id"].toString();
   }
 
+  Future<void> _navigateToEditPage(dynamic detailSeance) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ModifExercicePage(detailSeance: detailSeance)),
+    );
+  }
+
   Widget buildExoList() {
     // Vérifiez si la clé "detailSeances" existe dans seance
     if (widget.seance.containsKey("detailSeances")) {
@@ -30,8 +37,9 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
           itemBuilder: (context, index) {
             // Récupérez le détail de la séance à l'index donné
             final detailSeance = detailSeances[index];
-            return Card(
-              margin: const EdgeInsets.all(8.0),
+            detailSeance['seanceId'] = seanceId;
+            return InkWell(
+              onTap: () => _navigateToEditPage(detailSeance),
               child: Column(
                 children: [
                   Row(
@@ -71,14 +79,13 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
         );
       }
     }
-
-    // Si la clé "detailSeances" n'existe pas ou la liste est vide, affichez un message indiquant l'absence de données.
     return Center(child: Text("Aucune donnée disponible."));
   }
 
   @override
   Widget build(BuildContext context) {
     calcul();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Exercice seance"),

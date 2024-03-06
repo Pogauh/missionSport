@@ -12,13 +12,11 @@ class _SeancePageState extends State<SeancePage> {
   List<dynamic>? _seancesData;
 
   @override
-  // initie la récupération des exercice
   void initState() {
     super.initState();
     fetchSeances();
   }
 
-  // Récupération des users
   fetchSeances() async {
     try {
       final seancesData = await GetSeance.fetchSeance();
@@ -30,7 +28,6 @@ class _SeancePageState extends State<SeancePage> {
     }
   }
 
-  // Liste des clients
   Widget buildSeanceList() {
     if (_seancesData == null) {
       return const Center(child: CircularProgressIndicator());
@@ -40,9 +37,7 @@ class _SeancePageState extends State<SeancePage> {
       itemCount: _seancesData!.length,
       itemBuilder: (context, index) {
         final seance = _seancesData![index];
-        //Inkwell pour marqué chaque utilisateur pour aller à la page fidélité
         return Card(
-          // Section pour le client
           child: Card(
             margin: EdgeInsets.all(8.0),
             child: Column(
@@ -67,7 +62,6 @@ class _SeancePageState extends State<SeancePage> {
     );
   }
 
-  // Barre de recherche
   @override
   Widget build(BuildContext context) {
     return Scaffold(

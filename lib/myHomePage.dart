@@ -22,7 +22,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Map<String, dynamic> dataMap = new Map();
   bool recupDataBool = false;
 
-  // renvoie la requete préparé http en mode POST
   Future<http.Response> recupConnect(String login, String mdp) {
     return http.post(
       Uri.parse(
@@ -35,7 +34,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  // recupère le resultat d'une requete http et stock le resultat dans dataMap
   Future<void> recupDataJson() async {
     var reponse = await recupConnect(email, mdp);
     if (reponse.statusCode == 200) {

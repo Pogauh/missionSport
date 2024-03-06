@@ -42,3 +42,25 @@ class GetUser {
     }
   }
 }
+
+class PatchExercice {
+  static Future<void> updateExercice(
+      int detailSeanceId, Map<String, dynamic> exerciceData) async {
+    final response = await http.patch(
+      Uri.parse(
+          'https://s3-4680.nuage-peda.fr/missionSport/api/detail_seances/$detailSeanceId'),
+      headers: <String, String>{
+        'Content-Type': 'application/merge-patch+json',
+      },
+      body: jsonEncode(exerciceData),
+    );
+
+    if (response.statusCode == 200) {
+      print("Cest PASSERR");
+      return json.decode(response.body);
+    } else {
+      throw Exception(
+          'Failed to load data. Status code: ${response.statusCode}');
+    }
+  }
+}
