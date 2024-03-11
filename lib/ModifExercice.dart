@@ -1,6 +1,9 @@
+import 'dart:convert' as convert;
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 
 class ModifExercicePage extends StatefulWidget {
@@ -19,6 +22,8 @@ class _ModifExercicePageState extends State<ModifExercicePage> {
   String seanceId = "";
   String exerciceId = "";
   String commentaire = "";
+  int sets = 0;
+  int repetition = 0;
 
   @override
   void initState() {
@@ -30,51 +35,50 @@ class _ModifExercicePageState extends State<ModifExercicePage> {
         widget.detailSeance['repetition']?.toString() ?? '0';
   }
 
+
   calcul() async {
     exerciceId = widget.detailSeance["exercice"]["id"].toString();
     exerciceId = '"/missionSport/api/exercices/$exerciceId"';
     seanceId = widget.detailSeance["seanceId"].toString();
     seanceId = '"/missionSport/api/seances/${seanceId}"';
     commentaire = _commentaireController.text;
-    print(seanceId + exerciceId);
+    sets = int.parse(_setsController.text);
+    repetition = int.parse(_repetitionController.text);
+
   }
 
   static Future<void> editExercice(
-      int detailSeanceId, Map<String, dynamic> updatedExerciceData) async {
+      int detailSeanceId,String commentaire, int sets, int repetition) async {
     final response = await http.patch(
       Uri.parse(
           'https://s3-4680.nuage-peda.fr/missionSport/api/detail_seances/$detailSeanceId'),
       headers: <String, String>{
         'Content-Type': 'application/merge-patch+json',
       },
-      body: jsonEncode(updatedExerciceData),
+      body: 
+      convert.jsonEncode({'commentaire': commentaire ,'sets': sets, 'repetition':repetition}),
     );
 
     if (response.statusCode == 200) {
       print("La requete à correctement été envoyé");
+      print('Reponse.body.toString = '+ response.body.toString());
+
       return json.decode(response.body);
     } else {
-      throw Exception(
-          'Failed to load data. Status code: ${response.statusCode}');
+            print('Reponse.body.toString = '+ response.body.toString());
+
+          
     }
   }
 
   void _updateExercice() async {
     await calcul();
+    print("le commentaire : "+commentaire);
+    print("nombre de sets : "+ sets.toString());
+    print("nombre de repetition : "+repetition.toString());
+
     try {
-      final Map<String, dynamic> updatedExerciceData = {
-        '"commentaire"': '"$commentaire"',
-        '"sets"': int.parse(_setsController.text),
-        '"repetition"': int.parse(_repetitionController.text),
-        '"seance"': seanceId,
-        '"exercice"': exerciceId,
-      };
-
-      print(
-          "UpdatedExerciceData dans Modif exercice        $updatedExerciceData");
-
-      await editExercice(widget.detailSeance['id'], updatedExerciceData);
-
+      await editExercice(widget.detailSeance['id'],commentaire, sets, repetition);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Exercice mis à jour avec succès'),

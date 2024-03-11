@@ -17,9 +17,10 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
   bool _isLoading = false;
   bool recupDataBool = false;
   bool calcul = false;
-  List<dynamic> deuxExercices = [];
+  List<dynamic> cinqExercices = [];
   Map reponse = {};
   Map<String, dynamic> dataMap = {};
+  String type = "";
 
   static Future<Map<String, dynamic>> fetchExercice() async {
     final response = await http.get(
@@ -45,14 +46,30 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
 
       // Mélangez la liste des exercices
       exercicesJson.shuffle();
-      deuxExercices = exercicesJson.take(2).toList();
+      cinqExercices = exercicesJson.take(2).toList();
+      // Créez une liste de maps pour représenter les exercices
+      List<Map<String, dynamic>> exercicesList = [];
+
+      for (int i = 0; i < 5; i++) {
+        Map<String, dynamic> exercice = {
+          '@id': exercicesJson[i]['@id'],
+          '@type': exercicesJson[i]['@type'],
+          'id': exercicesJson[i]['id'],
+          'nom': exercicesJson[i]['nom'],
+          'description': exercicesJson[i]['description'],
+        };
+        exercicesList.add(exercice);
+      }
+      dataMap['data']['cinqExercices'] = exercicesList;
+      dataMap['data']['type'] = type;
     }
   }
 
-  startLoading() async {
+  startLoading(String seanceType) async {
     setState(() {
       _isLoading = true;
     });
+    type = '/missionSport/api/types/$seanceType';
     await recupDataJson();
     await genereExo(reponse);
     if (recupDataBool) {
@@ -63,7 +80,7 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
             title: 'Nouvelle séance',
           ),
           settings: RouteSettings(
-            arguments: deuxExercices,
+            arguments: dataMap,
           ),
         ),
       );
@@ -125,7 +142,7 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: _isLoading ? null : startLoading,
+                  onPressed: _isLoading ? null : () => startLoading("3"),
                   child: _isLoading
                       ? const CircularProgressIndicator()
                       : const Text("Séance Fullbody"),

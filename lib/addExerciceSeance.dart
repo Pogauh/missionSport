@@ -113,6 +113,8 @@ class _AddExerciceSeancePageState extends State<AddExerciceSeancePage> {
     if (reponse.statusCode == 201) {
       recupDataBool = true;
     } else if (reponse.statusCode == 500) {
+      print("erreur " + reponse.body.toString());
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Un probleme est survenue"),

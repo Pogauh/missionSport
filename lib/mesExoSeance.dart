@@ -38,41 +38,51 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
             // Récupérez le détail de la séance à l'index donné
             final detailSeance = detailSeances[index];
             detailSeance['seanceId'] = seanceId;
-            return InkWell(
-              onTap: () => _navigateToEditPage(detailSeance),
-              child: Column(
-                children: [
-                  Row(
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200], // Couleur grise légère
+                  borderRadius: BorderRadius.circular(
+                      8.0), // Facultatif : ajouter des coins arrondis
+                ),
+                child: InkWell(
+                  onTap: () => _navigateToEditPage(detailSeance),
+                  child: Column(
                     children: [
-                      Text(
-                        '${index + 1}',
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                      const SizedBox(width: 40),
-                      Expanded(
-                          child: Column(
+                      Row(
                         children: [
                           Text(
-                            'Exercice: ${detailSeance['exercice']['nom']}',
+                            '${index + 1}',
                             style: const TextStyle(fontSize: 20),
                           ),
-                          Text(
-                            'Series: ${detailSeance['sets']}',
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                          Text(
-                            'Répétitions: ${detailSeance['repetition']}',
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                          Text(
-                            'Commentaire: ${detailSeance['commentaire']}',
-                            style: const TextStyle(fontSize: 20),
-                          ),
+                          const SizedBox(width: 40),
+                          Expanded(
+                              child: Column(
+                            children: [
+                              Text(
+                                'Exercice: ${detailSeance['exercice']['nom']}',
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                              Text(
+                                'Series: ${detailSeance['sets'] ?? "Aucune données écrite"}',
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                              Text(
+                                'Répétitions: ${detailSeance['repetition'] ?? "Aucune données écrite"}',
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                              Text(
+                                'Commentaire: ${detailSeance['commentaire'] ?? "Aucun commentaire écrit"}',
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          ))
                         ],
-                      ))
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
             );
           },
