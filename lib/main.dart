@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mission_sport/addExerciceSeance.dart';
 import 'package:mission_sport/pageExercice.dart';
-import 'package:mission_sport/seancePage.dart';
 import 'package:mission_sport/mesSeance.dart';
 import 'package:mission_sport/createSeance.dart';
 
@@ -35,7 +34,6 @@ class MyApp extends StatelessWidget {
           '/inscription': (BuildContext context) =>
               const InscriptionPage(title: 'Inscription'),
           '/exercice': (BuildContext) => const ExercicePage(title: 'Exercice'),
-          '/seance': (BuildContext) => const SeancePage(title: 'Seance'),
           '/mesSeance': (BuildContext) =>
               const MesSeancePage(title: 'MesSeance'),
           '/createSeance': (BuildContext) =>

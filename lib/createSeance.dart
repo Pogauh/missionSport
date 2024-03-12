@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -38,18 +37,59 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
     recupDataBool = true;
   }
 
-  Future<void> genereExo(reponse) async {
+  Future<void> genereExoHcorps(reponse, seanceType) async {
     await recupDataJson();
     if (reponse.containsKey('hydra:member')) {
       final List<dynamic> exercicesJson = reponse['hydra:member'];
-      final Random random = Random();
-
-      // Mélangez la liste des exercices
       exercicesJson.shuffle();
-      cinqExercices = exercicesJson.take(2).toList();
-      // Créez une liste de maps pour représenter les exercices
       List<Map<String, dynamic>> exercicesList = [];
+      // Filtrer les exercices avec un muscleId différent de 2
+      List<dynamic> filteredExercices = exercicesJson
+          .where((exercice) => exercice['muscle']['id'] != 2)
+          .toList();
+      for (int i = 0; i < 5 && i < filteredExercices.length; i++) {
+        Map<String, dynamic> exercice = {
+          '@id': filteredExercices[i]['@id'],
+          '@type': filteredExercices[i]['@type'],
+          'id': filteredExercices[i]['id'],
+          'nom': filteredExercices[i]['nom'],
+          'description': filteredExercices[i]['description'],
+        };
+        exercicesList.add(exercice);
+      }
+      dataMap['data']['cinqExercices'] = exercicesList;
+      dataMap['data']['type'] = type;
+    }
+  }
 
+  Future<void> genereExoBCorps(reponse, seanceType) async {
+    await recupDataJson();
+    if (reponse.containsKey('hydra:member')) {
+      final List<dynamic> exercicesJson = reponse['hydra:member'];
+      int compareExercices(dynamic a, dynamic b) {
+        int muscleIdA = a['muscle']['id'];
+        int muscleIdB = b['muscle']['id'];
+        return muscleIdA.compareTo(muscleIdB);
+      }
+
+      List exercicesList = exercicesJson
+          .where((exercice) => exercice['muscle']['id'] == 2)
+          .toList();
+
+      // Trier la liste des exercices en utilisant la fonction de comparaison
+      exercicesList.sort(compareExercices);
+      exercicesList = exercicesList.take(5).toList();
+      dataMap['data']['cinqExercices'] = exercicesList;
+      dataMap['data']['type'] = type;
+    }
+  }
+
+  Future<void> genereExoFullbody(reponse, seanceType) async {
+    await recupDataJson();
+    if (reponse.containsKey('hydra:member')) {
+      final List<dynamic> exercicesJson = reponse['hydra:member'];
+      exercicesJson.shuffle();
+      List<Map<String, dynamic>> exercicesList = [];
       for (int i = 0; i < 5; i++) {
         Map<String, dynamic> exercice = {
           '@id': exercicesJson[i]['@id'],
@@ -71,7 +111,15 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
     });
     type = '/missionSport/api/types/$seanceType';
     await recupDataJson();
-    await genereExo(reponse);
+
+    if (seanceType == "3") {
+      await genereExoFullbody(reponse, seanceType);
+    } else if (seanceType == "2") {
+      await genereExoHcorps(reponse, seanceType);
+    } else if (seanceType == "1") {
+      await genereExoBCorps(reponse, seanceType);
+    }
+
     if (recupDataBool) {
       Navigator.push(
         context,
@@ -105,6 +153,7 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     return Scaffold(
       appBar: AppBar(
+        title: const Text("Création"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -130,15 +179,19 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
-                  child: Text("Séance haut du corps"),
+                  onPressed: _isLoading ? null : () => startLoading("2"),
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text("Séance haut du corps"),
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
-                  child: Text("Séance bas du corps"),
+                  onPressed: _isLoading ? null : () => startLoading("1"),
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text("Séance bas du corps"),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
@@ -156,7 +209,7 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => const CreateseancePersoPage(
-                          title: 'Mes Seances',
+                          title: 'Création de séance mannuel',
                         ),
                         settings: RouteSettings(
                           arguments: dataMap,

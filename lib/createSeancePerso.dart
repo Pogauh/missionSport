@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -53,7 +51,6 @@ class _CreateseancePersoPageState extends State<CreateseancePersoPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Un probleme est survenue"),
-          
         ),
       );
     } else {

@@ -15,7 +15,6 @@ class AddExerciceSeancePage extends StatefulWidget {
 }
 
 class _AddExerciceSeancePageState extends State<AddExerciceSeancePage> {
-  bool _isLoading = false;
   String exerciceId = "";
   String seanceId = "";
   bool recupDataBool = false;
@@ -128,7 +127,6 @@ class _AddExerciceSeancePageState extends State<AddExerciceSeancePage> {
   // Fonction déclanché par le clique qui attend recupDataJson et annonce son resultat
   startLoading(String exerciceId) async {
     setState(() {
-      _isLoading = true;
       exerciceId = '/missionSport/api/exercices/$exerciceId';
       print(exerciceId);
     });
@@ -145,13 +143,9 @@ class _AddExerciceSeancePageState extends State<AddExerciceSeancePage> {
           content: Text("Erreur dans l'ajout de l'exercice à la séance"),
         ),
       );
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() {});
     }
-    setState(() {
-      _isLoading = false;
-    });
+    setState(() {});
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mission_sport/mesExoSeance.dart';
+import 'package:mission_sport/modifSeance.dart';
 
 class MesSeancePage extends StatefulWidget {
   const MesSeancePage({super.key, required String title});
@@ -17,6 +18,18 @@ class _MesSeancePageState extends State<MesSeancePage> {
       context,
       MaterialPageRoute(builder: (context) => MesExoSeancePage(seance: seance)),
     );
+  }
+
+  editSeance(dynamic seance) {
+    print("navigator push");
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ModifSeancePage(seance: seance)),
+    );
+  }
+
+  void test() {
+    print('Methode Test');
   }
 
   Widget buildSeanceList() {
@@ -38,7 +51,7 @@ class _MesSeancePageState extends State<MesSeancePage> {
                   children: [
                     ListTile(
                       title: Text(
-                        'Commentaire: ${seance['commentaire']}',
+                        'Commentaire: ${seance['commentaire'] ?? "Aucune données inscrite"}',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -48,12 +61,24 @@ class _MesSeancePageState extends State<MesSeancePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Durée: ${seance['duree']} minutes',
+                            'Durée (min): ${seance['duree'] ?? "Aucune données inscrite"} ',
                             style: const TextStyle(fontSize: 16),
                           ),
                           Text(
                             'Type: ${seance['type']['nom']}',
                             style: const TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            // onPressed: () {
+                            //   print("test");
+                            // },
+                            onPressed: () => editSeance(seance),
+                            style: ElevatedButton.styleFrom(
+                              textStyle: const TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold),
+                            ),
+                            child: const Text("Modifier la séance"),
                           ),
                         ],
                       ),
@@ -80,6 +105,7 @@ class _MesSeancePageState extends State<MesSeancePage> {
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     return Scaffold(
       appBar: AppBar(
+        title: const Text("Mes séances"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),

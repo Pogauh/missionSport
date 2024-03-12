@@ -89,7 +89,7 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
         );
       }
     }
-    return Center(child: Text("Aucune donnée disponible."));
+    return const Center(child: Text("Aucune donnée disponible."));
   }
 
   @override

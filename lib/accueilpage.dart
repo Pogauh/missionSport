@@ -115,13 +115,6 @@ class _AccueilPageState extends State<AccueilPage> {
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/seance');
-                  },
-                  child: const Text("Les séances"),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
                   // selon la valeur de _isLoading, le bouton s'adapte
                   onPressed: _isLoading ? null : startLoading,
                   child: _isLoading

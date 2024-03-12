@@ -1,6 +1,5 @@
 import 'dart:convert' as convert;
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -35,7 +34,6 @@ class _ModifExercicePageState extends State<ModifExercicePage> {
         widget.detailSeance['repetition']?.toString() ?? '0';
   }
 
-
   calcul() async {
     exerciceId = widget.detailSeance["exercice"]["id"].toString();
     exerciceId = '"/missionSport/api/exercices/$exerciceId"';
@@ -44,41 +42,39 @@ class _ModifExercicePageState extends State<ModifExercicePage> {
     commentaire = _commentaireController.text;
     sets = int.parse(_setsController.text);
     repetition = int.parse(_repetitionController.text);
-
   }
 
   static Future<void> editExercice(
-      int detailSeanceId,String commentaire, int sets, int repetition) async {
+      int detailSeanceId, String commentaire, int sets, int repetition) async {
     final response = await http.patch(
       Uri.parse(
           'https://s3-4680.nuage-peda.fr/missionSport/api/detail_seances/$detailSeanceId'),
       headers: <String, String>{
         'Content-Type': 'application/merge-patch+json',
       },
-      body: 
-      convert.jsonEncode({'commentaire': commentaire ,'sets': sets, 'repetition':repetition}),
+      body: convert.jsonEncode(
+          {'commentaire': commentaire, 'sets': sets, 'repetition': repetition}),
     );
 
     if (response.statusCode == 200) {
       print("La requete à correctement été envoyé");
-      print('Reponse.body.toString = '+ response.body.toString());
+      print('Reponse.body.toString = ' + response.body.toString());
 
       return json.decode(response.body);
     } else {
-            print('Reponse.body.toString = '+ response.body.toString());
-
-          
+      print('Reponse.body.toString = ' + response.body.toString());
     }
   }
 
   void _updateExercice() async {
     await calcul();
-    print("le commentaire : "+commentaire);
-    print("nombre de sets : "+ sets.toString());
-    print("nombre de repetition : "+repetition.toString());
+    print("le commentaire : " + commentaire);
+    print("nombre de sets : " + sets.toString());
+    print("nombre de repetition : " + repetition.toString());
 
     try {
-      await editExercice(widget.detailSeance['id'],commentaire, sets, repetition);
+      await editExercice(
+          widget.detailSeance['id'], commentaire, sets, repetition);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Exercice mis à jour avec succès'),

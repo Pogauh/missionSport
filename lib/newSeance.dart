@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-import 'package:mission_sport/pageExercice.dart';
-
 class NewSeancePage extends StatefulWidget {
   const NewSeancePage({super.key, required String title});
 
@@ -17,8 +15,6 @@ class _NewSeancePageState extends State<NewSeancePage> {
   List<dynamic> cinqExercices = [];
   bool _isLoading = false;
   Map<String, dynamic> dataMap = {};
-  envoiExo() {}
-
   //----------------------------
 
   String id = "";
@@ -31,7 +27,6 @@ class _NewSeancePageState extends State<NewSeancePage> {
   String idSeanceCreate = "";
 
   Future<http.Response> fetchDetailSeance(String exerciceId) {
-    print("dernier print" + idSeanceCreate + exerciceId);
     return http.post(
       Uri.parse(
           'https://s3-4680.nuage-peda.fr/missionSport/api/detail_seances'),
@@ -59,14 +54,11 @@ class _NewSeancePageState extends State<NewSeancePage> {
 
   Future<void> recupDataJson() async {
     var reponse = await fetchSeance(id, type, date);
-    print("l'id est $id et le type est $type");
-
     if (reponse.statusCode == 201) {
       seanceData = json.decode(reponse.body);
       idSeanceCreate = seanceData['id'].toString();
       idSeanceCreate = "/missionSport/api/seances/$idSeanceCreate";
 
-      print(seanceData['id']);
       recupDataBool = true;
     } else if (reponse.statusCode == 500) {
       print("erreur " + reponse.body.toString());
@@ -84,7 +76,6 @@ class _NewSeancePageState extends State<NewSeancePage> {
     setState(() {
       _isLoading = true;
       type = dataMap['data']['type'];
-      print(type);
     });
     await calcul();
     await recupDataJson();
@@ -123,7 +114,6 @@ class _NewSeancePageState extends State<NewSeancePage> {
   //fie son resultat
   Future<void> recupDataJsonExercice(exerciceId) async {
     var reponse = await fetchDetailSeance(exerciceId);
-    print("l'exo est $exerciceId");
 
     if (reponse.statusCode == 201) {
       recupDataBool = true;
@@ -143,7 +133,6 @@ class _NewSeancePageState extends State<NewSeancePage> {
   startLoadingExercice(String exerciceId) async {
     setState(() {
       exerciceId = '/missionSport/api/exercices/$exerciceId';
-      print(exerciceId);
     });
     await recupDataJsonExercice(exerciceId);
     if (recupDataBool) {
