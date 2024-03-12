@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mission_sport/ModifExercice.dart';
+import 'package:http/http.dart' as http;
 
 class MesExoSeancePage extends StatefulWidget {
   const MesExoSeancePage({Key? key, required this.seance}) : super(key: key);
@@ -11,6 +14,7 @@ class MesExoSeancePage extends StatefulWidget {
 
 class _MesExoSeancePageState extends State<MesExoSeancePage> {
   String seanceId = "";
+  int detailSeanceId = 0;
 
   calcul() {
     seanceId = widget.seance["id"].toString();
@@ -22,6 +26,27 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
       MaterialPageRoute(
           builder: (context) => ModifExercicePage(detailSeance: detailSeance)),
     );
+  }
+
+  suppDetailSeance(detailSeance) {
+    detailSeanceId = detailSeance['id'];
+    deleteDetailSeance(detailSeanceId);
+  }
+
+  static Future<void> deleteDetailSeance(int detailSeanceId) async {
+    final response = await http.delete(
+      Uri.parse(
+          'https://s3-4680.nuage-peda.fr/missionSport/api/detail_seances/$detailSeanceId'),
+      headers: <String, String>{
+        'Content-Type': 'application/merge-patch+json',
+      },
+    );
+    if (response.statusCode == 204) {
+      print("La suppresion à correctement été effectué");
+      return json.decode(response.body);
+    } else {
+      print('Reponse.body.toString = ' + response.body.toString());
+    }
   }
 
   Widget buildExoList() {
@@ -75,6 +100,15 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
                               Text(
                                 'Commentaire: ${detailSeance['commentaire'] ?? "Aucun commentaire écrit"}',
                                 style: const TextStyle(fontSize: 20),
+                              ),
+                              ElevatedButton(
+                                onPressed: () => suppDetailSeance(detailSeance),
+                                style: ElevatedButton.styleFrom(
+                                  textStyle: const TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                child: const Text("Supprimer la séance"),
                               ),
                             ],
                           ))

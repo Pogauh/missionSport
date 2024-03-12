@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mission_sport/mesExoSeance.dart';
 import 'package:mission_sport/modifSeance.dart';
+import 'package:http/http.dart' as http;
 
 class MesSeancePage extends StatefulWidget {
   const MesSeancePage({super.key, required String title});
@@ -12,6 +14,7 @@ class MesSeancePage extends StatefulWidget {
 class _MesSeancePageState extends State<MesSeancePage> {
   Map<String, dynamic> dataMap = {};
   Map<String, dynamic> seanceMap = {};
+  int seanceId = 0;
 
   void _navigateToInfoPage(dynamic seance) {
     Navigator.push(
@@ -28,8 +31,38 @@ class _MesSeancePageState extends State<MesSeancePage> {
     );
   }
 
-  void test() {
-    print('Methode Test');
+  suppSeance(seance) {
+    seanceId = seance['id'];
+    deleteSeance(seanceId);
+  }
+
+  Future<Map<int, dynamic>> deleteSeance0(seanceId) async {
+    print(seanceId);
+    final response = await http.delete(Uri.parse(
+        'https://s3-4680.nuage-peda.fr/missionSport/api/seances/$seanceId'));
+    if (response.statusCode == 204) {
+      return json.decode(response.body);
+    } else {
+      throw Exception(
+          'Failed to load data. Status code: ${response.statusCode}');
+    }
+  }
+
+  static Future<void> deleteSeance(int seanceId) async {
+    final response = await http.delete(
+      Uri.parse(
+          'https://s3-4680.nuage-peda.fr/missionSport/api/seances/$seanceId'),
+      headers: <String, String>{
+        'Content-Type': 'application/merge-patch+json',
+      },
+    );
+
+    if (response.statusCode == 204) {
+      print("La suppresion à correctement été effectué");
+      return json.decode(response.body);
+    } else {
+      print('Reponse.body.toString = ' + response.body.toString());
+    }
   }
 
   Widget buildSeanceList() {
@@ -41,6 +74,7 @@ class _MesSeancePageState extends State<MesSeancePage> {
           itemCount: seances.length,
           itemBuilder: (context, index) {
             final seance = seances[index];
+            print(seance['id']);
             DateTime date = DateTime.parse(seance['date']);
             String formattedDate = "${date.day}/${date.month}/${date.year}";
             return InkWell(
@@ -69,16 +103,28 @@ class _MesSeancePageState extends State<MesSeancePage> {
                             style: const TextStyle(fontSize: 16),
                           ),
                           const SizedBox(height: 10),
-                          ElevatedButton(
-                            // onPressed: () {
-                            //   print("test");
-                            // },
-                            onPressed: () => editSeance(seance),
-                            style: ElevatedButton.styleFrom(
-                              textStyle: const TextStyle(
-                                  fontSize: 10, fontWeight: FontWeight.bold),
-                            ),
-                            child: const Text("Modifier la séance"),
+                          Row(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () => editSeance(seance),
+                                style: ElevatedButton.styleFrom(
+                                  textStyle: const TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                child: const Text("Modifier la séance"),
+                              ),
+                              SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: () => suppSeance(seance),
+                                style: ElevatedButton.styleFrom(
+                                  textStyle: const TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                child: const Text("Supprimer la séance"),
+                              ),
+                            ],
                           ),
                         ],
                       ),
