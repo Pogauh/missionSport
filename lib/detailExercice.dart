@@ -14,15 +14,8 @@ class DetailExercicePage extends StatefulWidget {
 }
 
 class _DetailExercicePageState extends State<DetailExercicePage> {
-  String exerciceId = "";
-
-  calcul() {
-    exerciceId = widget.exercice["id"].toString();
-  }
-
   @override
   Widget build(BuildContext context) {
-    calcul();
     print(widget.exercice["muscle"]["nom"]);
     return Scaffold(
         appBar: AppBar(

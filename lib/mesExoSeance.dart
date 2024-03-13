@@ -16,7 +16,7 @@ class MesExoSeancePage extends StatefulWidget {
 class _MesExoSeancePageState extends State<MesExoSeancePage> {
   String seanceId = "";
   int detailSeanceId = 0;
-  String exercice = "";
+  dynamic exercice = {};
   calcul() {
     seanceId = widget.seance["id"].toString();
   }
@@ -43,7 +43,7 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
   }
 
   voir(detailSeance) {
-    exercice = detailSeance['exercice'].toString();
+    exercice = detailSeance['exercice'];
     print(exercice);
     _navigateToExoDetailPage(exercice);
   }
