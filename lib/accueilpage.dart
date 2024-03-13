@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
@@ -27,8 +28,7 @@ class _AccueilPageState extends State<AccueilPage> {
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception(
-          'Failed to load data. Status code: ${response.statusCode}');
+      throw Exception('Failed to load data. Status code: ${response.body}');
     }
   }
 
@@ -90,7 +90,11 @@ class _AccueilPageState extends State<AccueilPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
         actions: <Widget>[
           IconButton(
               icon: const Icon(Icons.logout),
@@ -102,40 +106,38 @@ class _AccueilPageState extends State<AccueilPage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/exercice');
-                  },
-                  child: const Text("Les Exercices"),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  // selon la valeur de _isLoading, le bouton s'adapte
-                  onPressed: _isLoading ? null : startLoading,
-                  child: _isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text("Mes séances"),
-                ),
-              ],
+            Image.asset('assets/images/nav_MissionSport.png'),
+            SizedBox(height: 60),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/exercice');
+              },
+              child: const Text(
+                "Les Exercices",
+                style: TextStyle(fontSize: 20),
+              ),
             ),
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/createSeance',
-                          arguments: dataMap);
-                    },
-                    child: const Text("Crée une séance"),
-                  )
-                ],
+            const SizedBox(height: 50),
+            ElevatedButton(
+              // selon la valeur de _isLoading, le bouton s'adapte
+              onPressed: _isLoading ? null : startLoading,
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text(
+                      "Mes séances",
+                      style: TextStyle(fontSize: 20),
+                    ),
+            ),
+            SizedBox(height: 50),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/createSeance',
+                    arguments: dataMap);
+              },
+              child: const Text(
+                "Crée une séance",
+                style: TextStyle(fontSize: 20),
               ),
             ),
           ],
@@ -144,10 +146,3 @@ class _AccueilPageState extends State<AccueilPage> {
     );
   }
 }
-
-
-
-// print(seanceMap["seances"][0]["detailSeances"][0]["exercice"]["nom"]);
-
-
-

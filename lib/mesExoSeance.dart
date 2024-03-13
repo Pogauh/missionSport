@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mission_sport/ModifExercice.dart';
 import 'package:http/http.dart' as http;
+import 'package:mission_sport/detailExercice.dart';
 
 class MesExoSeancePage extends StatefulWidget {
   const MesExoSeancePage({Key? key, required this.seance}) : super(key: key);
@@ -15,7 +16,7 @@ class MesExoSeancePage extends StatefulWidget {
 class _MesExoSeancePageState extends State<MesExoSeancePage> {
   String seanceId = "";
   int detailSeanceId = 0;
-
+  String exercice = "";
   calcul() {
     seanceId = widget.seance["id"].toString();
   }
@@ -28,12 +29,26 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
     );
   }
 
+  Future<void> _navigateToExoDetailPage(dynamic exercice) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => DetailExercicePage(exercice: exercice)),
+    );
+  }
+
   suppDetailSeance(detailSeance) {
     detailSeanceId = detailSeance['id'];
     deleteDetailSeance(detailSeanceId);
   }
 
-  static Future<void> deleteDetailSeance(int detailSeanceId) async {
+  voir(detailSeance) {
+    exercice = detailSeance['exercice'].toString();
+    print(exercice);
+    _navigateToExoDetailPage(exercice);
+  }
+
+  Future<void> deleteDetailSeance(int detailSeanceId) async {
     final response = await http.delete(
       Uri.parse(
           'https://s3-4680.nuage-peda.fr/missionSport/api/detail_seances/$detailSeanceId'),
@@ -42,8 +57,13 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
       },
     );
     if (response.statusCode == 204) {
-      print("La suppresion à correctement été effectué");
-      return json.decode(response.body);
+      print("La suppression a correctement été effectuée");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content:
+              Text("La suppression de l'exercice a correctement été effectuée"),
+        ),
+      );
     } else {
       print('Reponse.body.toString = ' + response.body.toString());
     }
@@ -101,14 +121,34 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
                                 'Commentaire: ${detailSeance['commentaire'] ?? "Aucun commentaire écrit"}',
                                 style: const TextStyle(fontSize: 20),
                               ),
-                              ElevatedButton(
-                                onPressed: () => suppDetailSeance(detailSeance),
-                                style: ElevatedButton.styleFrom(
-                                  textStyle: const TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                child: const Text("Supprimer la séance"),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      onPressed: () =>
+                                          suppDetailSeance(detailSeance),
+                                      style: ElevatedButton.styleFrom(
+                                        textStyle: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      child: const Text("Supprimer l'exercice"),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      onPressed: () => voir(detailSeance),
+                                      style: ElevatedButton.styleFrom(
+                                        textStyle: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      child: const Text("Voir l'exercice"),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ))
@@ -132,6 +172,7 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text("Exercice seance"),
       ),
       body: Padding(

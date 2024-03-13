@@ -93,36 +93,48 @@ class _CreateseancePersoPageState extends State<CreateseancePersoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Center(
-        child: Form(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(
-                onPressed: _isLoading ? null : () => startLoading("1"),
-                child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text("Séance haut du corps"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: _isLoading ? null : () => startLoading("2"),
-                child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text("Séance bas du corps"),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _isLoading ? null : () => startLoading("3"),
-                child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text("Séance Fullbody"),
-              ),
-            ],
-          ),
+        child: Column(
+          children: <Widget>[
+            Image.asset('assets/images/nav_MissionSport.png'),
+            SizedBox(height: 50),
+            ElevatedButton(
+              onPressed: _isLoading ? null : () => startLoading("2"),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text(
+                      "Séance haut du corps",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            ElevatedButton(
+              onPressed: _isLoading ? null : () => startLoading("1"),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text(
+                      "Séance bas du corps",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+            ),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: _isLoading ? null : () => startLoading("3"),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text(
+                      "Séance Fullbody",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+            ),
+          ],
         ),
       ),
     );

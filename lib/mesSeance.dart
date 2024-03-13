@@ -36,19 +36,7 @@ class _MesSeancePageState extends State<MesSeancePage> {
     deleteSeance(seanceId);
   }
 
-  Future<Map<int, dynamic>> deleteSeance0(seanceId) async {
-    print(seanceId);
-    final response = await http.delete(Uri.parse(
-        'https://s3-4680.nuage-peda.fr/missionSport/api/seances/$seanceId'));
-    if (response.statusCode == 204) {
-      return json.decode(response.body);
-    } else {
-      throw Exception(
-          'Failed to load data. Status code: ${response.statusCode}');
-    }
-  }
-
-  static Future<void> deleteSeance(int seanceId) async {
+  Future<void> deleteSeance(int seanceId) async {
     final response = await http.delete(
       Uri.parse(
           'https://s3-4680.nuage-peda.fr/missionSport/api/seances/$seanceId'),
@@ -58,8 +46,13 @@ class _MesSeancePageState extends State<MesSeancePage> {
     );
 
     if (response.statusCode == 204) {
-      print("La suppresion à correctement été effectué");
-      return json.decode(response.body);
+      print("La suppression a correctement été effectuée");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content:
+              Text("La suppression de la séance a correctement été effectuée"),
+        ),
+      );
     } else {
       print('Reponse.body.toString = ' + response.body.toString());
     }

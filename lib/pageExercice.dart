@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mission_sport/detailExercice.dart';
 import 'api/api_exercice.dart';
 
 class ExercicePage extends StatefulWidget {
@@ -52,6 +53,14 @@ class _ExercicePageState extends State<ExercicePage> {
     }
   }
 
+  Future<void> _navigateToExoDetailPage(dynamic exercice) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => DetailExercicePage(exercice: exercice)),
+    );
+  }
+
   // Liste des clients
   Widget buildExerciceList() {
     if (_filteredExercices == null) {
@@ -62,14 +71,18 @@ class _ExercicePageState extends State<ExercicePage> {
       itemCount: _filteredExercices!.length,
       itemBuilder: (context, index) {
         final exercice = _filteredExercices![index];
-        return Card(
+        return InkWell(
+          onTap: () => _navigateToExoDetailPage(exercice),
           child: Card(
-            margin: EdgeInsets.all(8.0),
+            margin: EdgeInsets.all(5.0),
             child: Column(
               children: [
                 Text(
                   'Nom: ${exercice['nom']}',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(
+                    fontSize: 20,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
                 Text(
                   'Description: ${exercice['description']}',
@@ -88,20 +101,9 @@ class _ExercicePageState extends State<ExercicePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: _nomController,
-                onChanged: (_) => _searchExercices(),
-                decoration: const InputDecoration(
-                  hintText: 'Nom',
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-          ],
-        ),
+        title: Row(children: [
+          Text("Liste des exercices"),
+        ]),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -111,6 +113,39 @@ class _ExercicePageState extends State<ExercicePage> {
       ),
       body: Column(
         children: [
+          Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                top: BorderSide(color: Color(0xFFFFFFFF)),
+                left: BorderSide(color: Color(0xFFFFFFFF)),
+              ),
+            ),
+            margin: new EdgeInsets.symmetric(vertical: 20.0),
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
+              child: TextField(
+                controller: _nomController,
+                onChanged: (_) => _searchExercices(),
+                decoration: InputDecoration(
+                  hintText: 'Rechercher un exercice',
+                  border: InputBorder.none,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.black, width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.black, width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  filled: true,
+                  fillColor: const Color.fromARGB(255, 249, 249, 249),
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: buildExerciceList(),
           ),

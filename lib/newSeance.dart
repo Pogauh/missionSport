@@ -200,6 +200,7 @@ class _NewSeancePageState extends State<NewSeancePage> {
     cinqExercices = dataMap['data']['cinqExercices'];
     return Scaffold(
       appBar: AppBar(
+        title: Text("Proposition de séance"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),

@@ -164,8 +164,9 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset('assets/images/nav_MissionSport.png'),
+            SizedBox(height: 20),
             const Text(
               "Créer votre programme",
               style: TextStyle(
@@ -174,53 +175,70 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
                 color: Colors.amber,
               ),
             ),
-            const SizedBox(height: 20),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: _isLoading ? null : () => startLoading("2"),
-                  child: _isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text("Séance haut du corps"),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  onPressed: _isLoading ? null : () => startLoading("1"),
-                  child: _isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text("Séance bas du corps"),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _isLoading ? null : () => startLoading("3"),
-                  child: _isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text("Séance Fullbody"),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CreateseancePersoPage(
-                          title: 'Création de séance mannuel',
-                        ),
-                        settings: RouteSettings(
-                          arguments: dataMap,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Text("Créer votre séance"),
-                ),
-              ],
-            )
+            const SizedBox(height: 30),
+            const Text(
+              "Par proposition",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.amber,
+              ),
+            ),
+            SizedBox(height: 15),
+            ElevatedButton(
+              onPressed: _isLoading ? null : () => startLoading("2"),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text("Séance haut du corps"),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: _isLoading ? null : () => startLoading("1"),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text("Séance bas du corps"),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _isLoading ? null : () => startLoading("3"),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text("Séance Fullbody"),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const Text(
+              "Manuellement ",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.amber,
+              ),
+            ),
+            SizedBox(height: 15),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CreateseancePersoPage(
+                      title: 'Création de séance mannuel',
+                    ),
+                    settings: RouteSettings(
+                      arguments: dataMap,
+                    ),
+                  ),
+                );
+              },
+              child: Text("Créer votre séance"),
+              style: ElevatedButton.styleFrom(
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
           ],
         ),
       ),

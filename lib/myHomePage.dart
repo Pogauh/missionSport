@@ -16,7 +16,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
   String email = "";
   String mdp = "";
-  String txtButton = "Submit";
+  String txtButton = "Se connecter";
   bool _isLoading = false;
 
   Map<String, dynamic> dataMap = new Map();
@@ -84,7 +84,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
       ),
       body: Center(
         child: Form(
@@ -93,39 +97,47 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               // login
-              TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Email",
-                    hintText: "Saisir votre email"),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Erreur de saisie";
-                  } else {
-                    email = value;
-                  }
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 60.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Email",
+                      hintText: "Saisir votre email"),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Erreur de saisie";
+                    } else {
+                      email = value;
+                    }
+                  },
+                ),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 5.0),
               ),
               // password
-              TextFormField(
-                obscureText: true,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Mot de passe",
-                    hintText: "Saisir votre mot de passe"),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Erreur de saisie";
-                  } else {
-                    mdp = value;
-                  }
-                },
-              ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 60.0),
+                child: TextFormField(
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Mot de passe",
+                      hintText: "Saisir votre mot de passe"),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Erreur de saisie";
+                    } else {
+                      mdp = value;
+                    }
+                  },
+                ),
+              ),
+              SizedBox(height: 10),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: ElevatedButton(
                   // selon la valeur de _isLoading, le bouton s'adapte
                   onPressed: _isLoading ? null : startLoading,
@@ -136,18 +148,12 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
 
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(width: 16),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/inscription');
-                      },
-                      child: const Text("S'inscrire"),
-                    ),
-                  ],
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/inscription');
+                  },
+                  child: const Text("S'inscrire"),
                 ),
               ),
             ],
