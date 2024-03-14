@@ -15,12 +15,9 @@ class _NewSeancePageState extends State<NewSeancePage> {
   List<dynamic> cinqExercices = [];
   bool _isLoading = false;
   Map<String, dynamic> dataMap = {};
-  //----------------------------
-
   String id = "";
   String exerciceId = "";
   String type = "";
-  String txtButton = "Submit";
   bool recupDataBool = false;
   String date = "";
   Map<String, dynamic> seanceData = {};
@@ -58,13 +55,12 @@ class _NewSeancePageState extends State<NewSeancePage> {
       seanceData = json.decode(reponse.body);
       idSeanceCreate = seanceData['id'].toString();
       idSeanceCreate = "/missionSport/api/seances/$idSeanceCreate";
-
       recupDataBool = true;
     } else if (reponse.statusCode == 500) {
       print("erreur " + reponse.body.toString());
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Un probleme est survenue"),
+          content: Text("Un probleme est survenue ( erreur 500 )"),
         ),
       );
     } else {
@@ -108,18 +104,13 @@ class _NewSeancePageState extends State<NewSeancePage> {
     }
   }
 
-  //-----------------------------
-
-  // Fonction qui attend fetchDetailSeance et qui veri
-  //fie son resultat
+  // Fonction qui attend fetchDetailSeance et qui verifie son resultat
   Future<void> recupDataJsonExercice(exerciceId) async {
     var reponse = await fetchDetailSeance(exerciceId);
 
     if (reponse.statusCode == 201) {
       recupDataBool = true;
     } else if (reponse.statusCode == 500) {
-      print("erreur " + reponse.body.toString());
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Un probleme est survenue"),
@@ -155,8 +146,6 @@ class _NewSeancePageState extends State<NewSeancePage> {
       _isLoading = false;
     });
   }
-
-  //------------------------------
 
   Widget buildPropositionList() {
     return ListView.builder(
@@ -200,7 +189,7 @@ class _NewSeancePageState extends State<NewSeancePage> {
     cinqExercices = dataMap['data']['cinqExercices'];
     return Scaffold(
       appBar: AppBar(
-        title: Text("Proposition de séance"),
+        title: const Text("Proposition de séance"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -222,13 +211,13 @@ class _NewSeancePageState extends State<NewSeancePage> {
                 ElevatedButton(
                   // selon la valeur de _isLoading, le bouton s'adapte
                   onPressed: _isLoading ? null : startLoading,
-                  child: _isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text("Accepter la proposition"),
                   style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text("Accepter la proposition"),
                 ),
               ],
             ),

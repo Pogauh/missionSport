@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:mission_sport/ModifExercice.dart';
 import 'package:http/http.dart' as http;
@@ -44,7 +42,6 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
 
   voir(detailSeance) {
     exercice = detailSeance['exercice'];
-    print(exercice);
     _navigateToExoDetailPage(exercice);
   }
 
@@ -57,7 +54,6 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
       },
     );
     if (response.statusCode == 204) {
-      print("La suppression a correctement été effectuée");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content:
@@ -187,7 +183,7 @@ class _MesExoSeancePageState extends State<MesExoSeancePage> {
           Navigator.pushNamed(context, '/addExerciceSeance',
               arguments: seanceId);
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

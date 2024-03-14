@@ -1,8 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:mission_sport/ModifExercice.dart';
-import 'package:http/http.dart' as http;
 
 class DetailExercicePage extends StatefulWidget {
   const DetailExercicePage({Key? key, required this.exercice})
@@ -16,13 +12,12 @@ class DetailExercicePage extends StatefulWidget {
 class _DetailExercicePageState extends State<DetailExercicePage> {
   @override
   Widget build(BuildContext context) {
-    print(widget.exercice["muscle"]["nom"]);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(
+          title: const Text(
             "Exercice",
-            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -34,41 +29,42 @@ class _DetailExercicePageState extends State<DetailExercicePage> {
                   height: 200, width: 200),
               Text(
                 widget.exercice["nom"],
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                         "Muscle travaillé :",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         widget.exercice["muscle"]["nom"],
-                        style: TextStyle(fontSize: 17),
+                        style: const TextStyle(fontSize: 17),
                       )
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                         "Description",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         widget.exercice["description"],
-                        style: TextStyle(fontSize: 15),
+                        style: const TextStyle(fontSize: 15),
                       )
                     ],
                   ),

@@ -19,7 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String txtButton = "Se connecter";
   bool _isLoading = false;
 
-  Map<String, dynamic> dataMap = new Map();
+  Map<String, dynamic> dataMap = {};
   bool recupDataBool = false;
 
   Future<http.Response> recupConnect(String login, String mdp) {
@@ -134,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),

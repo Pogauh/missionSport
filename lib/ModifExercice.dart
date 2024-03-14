@@ -2,7 +2,6 @@ import 'dart:convert' as convert;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 
 class ModifExercicePage extends StatefulWidget {
@@ -57,9 +56,6 @@ class _ModifExercicePageState extends State<ModifExercicePage> {
     );
 
     if (response.statusCode == 200) {
-      print("La requete à correctement été envoyé");
-      print('Reponse.body.toString = ' + response.body.toString());
-
       return json.decode(response.body);
     } else {
       print('Reponse.body.toString = ' + response.body.toString());
@@ -68,10 +64,6 @@ class _ModifExercicePageState extends State<ModifExercicePage> {
 
   void _updateExercice() async {
     await calcul();
-    print("le commentaire : " + commentaire);
-    print("nombre de sets : " + sets.toString());
-    print("nombre de repetition : " + repetition.toString());
-
     try {
       await editExercice(
           widget.detailSeance['id'], commentaire, sets, repetition);

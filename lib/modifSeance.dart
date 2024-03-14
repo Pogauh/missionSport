@@ -1,7 +1,6 @@
 import 'dart:convert' as convert;
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 
 class ModifSeancePage extends StatefulWidget {
@@ -30,7 +29,7 @@ class _ModifSeancePageState extends State<ModifSeancePage> {
 
   calcul() async {
     seanceId = widget.seance["seanceId"].toString();
-    seanceId = '"/missionSport/api/seances/${seanceId}"';
+    seanceId = '"/missionSport/api/seances/$seanceId"';
     commentaire = _commentaireController.text;
     duree = int.parse(_dureeController.text);
   }
@@ -47,9 +46,6 @@ class _ModifSeancePageState extends State<ModifSeancePage> {
     );
 
     if (response.statusCode == 200) {
-      print("La requete à correctement été envoyé");
-      print('Reponse.body.toString = ' + response.body.toString());
-
       return json.decode(response.body);
     } else {
       print('Reponse.body.toString = ' + response.body.toString());
@@ -58,8 +54,6 @@ class _ModifSeancePageState extends State<ModifSeancePage> {
 
   void _updateSeance() async {
     await calcul();
-    print("le commentaire : " + commentaire);
-    print("La duree : " + duree.toString());
     try {
       await editSeance(widget.seance['id'], commentaire, duree);
       ScaffoldMessenger.of(context).showSnackBar(

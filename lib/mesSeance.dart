@@ -24,7 +24,6 @@ class _MesSeancePageState extends State<MesSeancePage> {
   }
 
   editSeance(dynamic seance) {
-    print("navigator push");
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ModifSeancePage(seance: seance)),
@@ -46,7 +45,6 @@ class _MesSeancePageState extends State<MesSeancePage> {
     );
 
     if (response.statusCode == 204) {
-      print("La suppression a correctement été effectuée");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content:
@@ -67,7 +65,6 @@ class _MesSeancePageState extends State<MesSeancePage> {
           itemCount: seances.length,
           itemBuilder: (context, index) {
             final seance = seances[index];
-            print(seance['id']);
             DateTime date = DateTime.parse(seance['date']);
             String formattedDate = "${date.day}/${date.month}/${date.year}";
             return InkWell(
@@ -107,7 +104,7 @@ class _MesSeancePageState extends State<MesSeancePage> {
                                 ),
                                 child: const Text("Modifier la séance"),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               ElevatedButton(
                                 onPressed: () => suppSeance(seance),
                                 style: ElevatedButton.styleFrom(
@@ -135,7 +132,7 @@ class _MesSeancePageState extends State<MesSeancePage> {
       }
     }
 
-    return Center(child: Text("Aucune donnée disponible."));
+    return const Center(child: Text("Aucune donnée disponible."));
   }
 
   @override

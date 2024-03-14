@@ -13,7 +13,7 @@ class _ExercicePageState extends State<ExercicePage> {
   Map<String, dynamic>? _exercicesData;
   List<dynamic>? _filteredExercices;
 
-  TextEditingController _nomController = TextEditingController();
+  final TextEditingController _nomController = TextEditingController();
 
   @override
   // initie la récupération des exercice
@@ -61,7 +61,7 @@ class _ExercicePageState extends State<ExercicePage> {
     );
   }
 
-  // Liste des clients
+  // Liste des exercices
   Widget buildExerciceList() {
     if (_filteredExercices == null) {
       return const Center(child: CircularProgressIndicator());
@@ -79,14 +79,14 @@ class _ExercicePageState extends State<ExercicePage> {
               children: [
                 Text(
                   'Nom: ${exercice['nom']}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     decoration: TextDecoration.underline,
                   ),
                 ),
                 Text(
                   'Description: ${exercice['description']}',
-                  style: TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 20),
                 ),
               ],
             ),
@@ -101,11 +101,11 @@ class _ExercicePageState extends State<ExercicePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Row(children: [
+        title: const Row(children: [
           Text("Liste des exercices"),
         ]),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -120,7 +120,7 @@ class _ExercicePageState extends State<ExercicePage> {
                 left: BorderSide(color: Color(0xFFFFFFFF)),
               ),
             ),
-            margin: new EdgeInsets.symmetric(vertical: 20.0),
+            margin: const EdgeInsets.symmetric(vertical: 20.0),
             child: Container(
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),

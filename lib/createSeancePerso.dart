@@ -32,17 +32,13 @@ class _CreateseancePersoPageState extends State<CreateseancePersoPage> {
   }
 
   Future<void> calcul() async {
-    print(dataMap);
     id = "/missionSport/api/users/${dataMap['data']['id']}";
     DateTime now = DateTime.now();
     date = now.toUtc().toIso8601String();
-    print(date);
   }
 
   Future<void> recupDataJson() async {
     var reponse = await fetchSeance(id, type, date);
-    print("l'id est $id et le type est $type");
-
     if (reponse.statusCode == 201) {
       recupDataBool = true;
     } else if (reponse.statusCode == 500) {
@@ -68,7 +64,7 @@ class _CreateseancePersoPageState extends State<CreateseancePersoPage> {
     if (recupDataBool) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("La séance a été créer"),
+          content: Text("La séance a été crée"),
         ),
       );
     } else {
@@ -99,7 +95,7 @@ class _CreateseancePersoPageState extends State<CreateseancePersoPage> {
         child: Column(
           children: <Widget>[
             Image.asset('assets/images/nav_MissionSport.png'),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             ElevatedButton(
               onPressed: _isLoading ? null : () => startLoading("2"),
               child: _isLoading

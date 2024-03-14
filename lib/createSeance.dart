@@ -156,7 +156,7 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
         title: const Text("Création"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -166,7 +166,7 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
         child: Column(
           children: [
             Image.asset('assets/images/nav_MissionSport.png'),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             const Text(
               "Créer votre programme",
               style: TextStyle(
@@ -184,14 +184,14 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
                 color: Colors.amber,
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             ElevatedButton(
               onPressed: _isLoading ? null : () => startLoading("2"),
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : const Text("Séance haut du corps"),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             ElevatedButton(
@@ -200,7 +200,7 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
                   ? const CircularProgressIndicator()
                   : const Text("Séance bas du corps"),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _isLoading ? null : () => startLoading("3"),
               child: _isLoading
@@ -218,7 +218,7 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
                 color: Colors.amber,
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -233,11 +233,11 @@ class _CreateSeancePageState extends State<CreateSeancePage> {
                   ),
                 );
               },
-              child: Text("Créer votre séance"),
               style: ElevatedButton.styleFrom(
                 textStyle:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
+              child: const Text("Créer votre séance"),
             ),
           ],
         ),
